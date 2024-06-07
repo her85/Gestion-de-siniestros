@@ -91,8 +91,8 @@
                 </thead>
                 <tbody class="mb-3">
                   <% for(i=0; i < siniestros.length; i++) { const fechaSiniestro=new Date(siniestros[i].fechaSiniestro);
-                    const opciones={ day: '2-digit' , month: '2-digit' , year: 'numeric' } const
-                    fechaFormateada=fechaSiniestro.toLocaleDateString(opciones); %>
+                    const opciones = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                    const fechaFormateada=fechaSiniestro.toLocaleDateString(opciones); %>
                     <tr>
                       <th scope="row">
                         <%= siniestros[i].numeroSiniestro %>
