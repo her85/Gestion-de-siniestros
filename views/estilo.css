@@ -1,0 +1,30 @@
+body {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-color: whitesmoke;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 16px;
+}
+
+label {
+  font-size: 16px;
+}
+
+footer {
+  padding: 20px;
+  font-size: 12px;
+}
+
+.contenedor-inicio {
+  padding-top: 250px;
+  padding-bottom: 250px;
+}
+.boton {
+  padding: 20px;
+}
+
+.boton-inicio{
+  padding: 5px;
+}
+

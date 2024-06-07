@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consultar Siniestros</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+  <link rel="stylesheet" href="/estilo.css" />
+  <link rel="icon" href="/icono.jfif" />
+</head>
+
+<body>
+  <header class="container text-center">
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand">
+          <img src="/logo.jfif" alt="Logo empresa" width="50" height="50" />
+        </a>
+        <div>
+          <a href="/" class="btn btn-primary btn-block ingresar-siniestro">Inicio</a>
+          <a href="/ingresar_siniestro" class="btn btn-primary btn-block ingresar-siniestro">Ingresar siniestro</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="container-sm">
+      <div class="border border-primary">
+        <section class="container mt-5">
+          <div>
+            <h2>Consultar Siniestros</h2>
+          </div>
+          <form id="siniestro-search-form" action="/consultar_siniestro/datos" method="GET">
+            <div class="mb-3">
+              <label for="numeroSiniestro" class="form-label"></label>
+              <input type="number" class="form-control" id="numeroSiniestro" name="numeroSiniestro"
+                placeholder="Ingrese el número de siniestro" />
+            </div>
+            <div class="mb-3">
+              <label for="dniCliente" class="form-label"></label>
+              <input type="number" class="form-control" id="documentoCliente" name="documentoCliente"
+                placeholder="Ingrese el documento del cliente" />
+            </div>
+            <div class="mb-3">
+              <label for="patente" class="form-label"></label>
+              <input type="text" class="form-control" id="patente" name="patente"
+                placeholder="Ingrese la patente del vehiculo" />
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="mb-3">
+                  <label for="desdeFechaSiniestro" class="form-label">Ingrese fecha desde</label>
+                  <input type="date" class="form-control" id="desdeFechaSiniestro" name="desdeFechaSiniestro"
+                    placeholder="Ingrese fecha desde" />
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="mb-3">
+                  <label for="hastaFechaSiniestro" class="form-label">Ingrese fecha hasta</label>
+                  <input type="date" class="form-control" id="hastaFechaSiniestro" name="hastaFechaSiniestro"
+                    placeholder="Ingrese fecha hasta" />
+                </div>
+              </div>
+            </div>
+            <div class="boton">
+              <button type="submit" class="btn btn-primary">
+                Buscar Siniestros
+              </button>
+            </div>
+          </form>
+        </section>
+        <section class="container mt-5">
+          <div>
+            <h2>Siniestros</h2>
+          </div>
+          <div class="container text-center">
+            <% if (siniestros && siniestros.length> 0) { %>
+
+              <table class="table table-hover">
+                <thead class="mb-3">
+                  <tr>
+                    <th scope="col">N° Siniestro</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Documento</th>
+                    <th scope="col">Patente</th>
+                    <th scope="col">Tipo de siniestro</th>
+                    <th scope="col">Fecha del siniestro</th>
+                  </tr>
+                </thead>
+                <tbody class="mb-3">
+                  <% for(i=0; i < siniestros.length; i++) { const fechaSiniestro=new Date(siniestros[i].fechaSiniestro);
+                    const fechaFormateada=fechaSiniestro.toLocaleDateString(); %>
+                    <tr>
+                      <th scope="row">
+                        <%= siniestros[i].numeroSiniestro %>
+                      </th>
+                      <td>
+                        <%= siniestros[i].cliente %>
+                      </td>
+                      <td>
+                        <%= siniestros[i].documento %>
+                      </td>
+                      <td>
+                        <%= siniestros[i].patente %>
+                      </td>
+                      <td>
+                        <%= siniestros[i].tipoSiniestro %>
+                      </td>
+                      <!-- Mostramos solo la fecha sin la hora -->
+                      <td>
+                        <%= fechaFormateada %>
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                          data-bs-target="#editSiniestroModal-<%= siniestros[i].numeroSiniestro %>">
+                          Editar
+                        </button>
+                      </td>
+                      <td>
+                        <button onclick="borrarPorNumeroSiniestro('<%= siniestros[i].numeroSiniestro %>')"
+                          class="btn btn-secondary btn-sm">
+                          Borrar
+                        </button>
+                      </td>
+                    </tr>
+                    <div class="modal fade" id="editSiniestroModal-<%= siniestros[i].numeroSiniestro %>" tabindex="-1"
+                      aria-labelledby="editSiniestroModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h3 class="container text-center" id="editSiniestroModalLabel">
+                              Siniestro <%= siniestros[i].numeroSiniestro %>
+                            </h3>
+                          </div>
+                          <div class="modal-body">
+                            <form id="edit-siniestro-form-<%= siniestros[i].numeroSiniestro %>">
+                              <div class="mb-3">
+                                <input type="hidden" name="numeroSiniestro"
+                                  value="<%= siniestros[i].numeroSiniestro %>" />
+                              </div>
+                              <div class="row">
+                                <div class="col-6">
+                                  <div class="mb-3">
+                                    <label for="editarPoliza" class="form-label">N° poliza</label>
+                                    <input type="number" class="form-control"
+                                      id="editarPoliza-<%= siniestros[i].numeroSiniestro %>" name="editarPoliza"
+                                      value="<%= siniestros[i].numeroPoliza %>" />
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editarTipoDocumentoCliente" class="form-label">Tipo documento</label>
+                                    <select class="form-select"
+                                      id="editarTipoDocumentoCliente-<%= siniestros[i].numeroSiniestro %>"
+                                      name="editarTipoDocumentoCliente">
+                                      <option value="DNI" <%=siniestros[i].tipoDocumento==='DNI' ? 'selected' : '' %>
+                                        >DNI
+                                      </option>
+                                      <option value="LE" <%=siniestros[i].tipoDocumento==='LE' ? 'selected' : '' %>>LE
+                                      </option>
+                                      <option value="Pasaporte" <%=siniestros[i].tipoDocumento==='Pasaporte'
+                                        ? 'selected' : '' %>>Pasaporte</option>
+                                      <option value="CUIT" <%=siniestros[i].tipoDocumento==='CUIT' ? 'selected' : '' %>
+                                        >CUIT
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editarDocumentoCliente" class="form-label">Documento</label>
+                                    <input type="number" class="form-control"
+                                      id="editarDocumentoCliente-<%= siniestros[i].numeroSiniestro %>"
+                                      name="editarDocumentoCliente" value="<%= siniestros[i].documento%>" />
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editarCliente" class="form-label">Nombre completo</label>
+                                    <input type="text" class="form-control"
+                                      id="editarCliente-<%= siniestros[i].numeroSiniestro %>" name="editarCliente"
+                                      value="<%= siniestros[i].cliente %>" />
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editarDireccionCliente" class="form-label">Direccion del cliente</label>
+                                    <input type="text" class="form-control"
+                                      id="editarDireccionCliente-<%= siniestros[i].numeroSiniestro %>"
+                                      name="editarDireccionCliente" value="<%= siniestros[i].direccionCliente %>" />
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editarTelefonoCliente" class="form-label">Telefono del cliente</label>
+                                    <input type="number" class="form-control"
+                                      id="editarTelefonoCliente-<%= siniestros[i].numeroSiniestro %>"
+                                      name="editarTelefonoCliente" value="<%= siniestros[i].telefonoCliente %>" />
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editarMailCliente" class="form-label">Email del cliente</label>
+                                    <input type="email" class="form-control"
+                                      id="editarMailCliente-<%= siniestros[i].numeroSiniestro %>"
+                                      name="editarMailCliente" value="<%= siniestros[i].mailCliente %>" />
+                                  </div>
+                                </div>
+                                <div class="col-6">
+                                  <div class="mb-3">
+                                    <label for="editarTipoVehiculo" class="form-label">Tipo de vehiculo</label>
+                                    <select class="form-select"
+                                      id="editarTipoVehiculo-<%= siniestros[i].numeroSiniestro %>"
+                                      name="editarTipoVehiculo">
+                                      <option value="Auto" <%=siniestros[i].tipoVehiculo==='Auto' ? 'selected' : '' %>
+                                        >Auto
+                                      </option>
+                                      <option value="Moto" <%=siniestros[i].tipoVehiculo==='Moto' ? 'selected' : '' %>
+                                        >Moto
+                                      </option>
+                                      <option value="Camioneta" <%=siniestros[i].tipoVehiculo==='Camioneta' ? 'selected'
+                                        : '' %>>Camioneta</option>
+                                      <option value="Camion" <%=siniestros[i].tipoVehiculo==='Camion' ? 'selected' : ''
+                                        %>
+                                        >Camion</option>
+                                      <option value="Acoplado" <%=siniestros[i].tipoVehiculo==='Acoplado' ? 'selected'
+                                        : '' %>
+                                        >Acoplado</option>
+                                    </select>
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editarPatente" class="form-label">Patente</label>
+                                    <input type="text" class="form-control"
+                                      id="editarPatente-<%= siniestros[i].numeroSiniestro %>" name="editarPatente"
+                                      value="<%= siniestros[i].patente %>" />
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editarMarca" class="form-label">Marca</label>
+                                    <input type="text" class="form-control"
+                                      id="editarMarca-<%= siniestros[i].numeroSiniestro %>" name="editarMarca"
+                                      value="<%= siniestros[i].marca %>" />
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editarModelo" class="form-label">Modelo</label>
+                                    <input type="text" class="form-control"
+                                      id="editarModelo-<%= siniestros[i].numeroSiniestro %>" name="editarModelo"
+                                      value="<%= siniestros[i].modelo %>" />
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editarAnioFabricacion" class="form-label">Año de fabricación</label>
+                                    <input type="number" class="form-control"
+                                      id="editarAnioFabricacion-<%= siniestros[i].numeroSiniestro %>"
+                                      name="editarAnioFabricacion" value="<%= siniestros[i].anioFabricacion %>" />
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="editarNumeroDeMotor" class="form-label">N° motor</label>
+                                    <input type="text" class="form-control"
+                                      id="editarNumeroDeMotor-<%= siniestros[i].numeroSiniestro %>"
+                                      name="editarNumeroDeMotor" value="<%= siniestros[i].numeroDeMotor %>" />
+                                  </div>
+
+                                  <div class="mb-3">
+                                    <label for="editarNumeroDeChasis" class="form-label">N° de chasis</label>
+                                    <input type="text" class="form-control"
+                                      id="editarnumeroDeChasis-<%= siniestros[i].numeroSiniestro %>"
+                                      name="editarNumeroDeChasis" value="<%= siniestros[i].numeroDeChasis %>" />
+                                  </div>
+                                  <!-- Ver que  pasa numero de chasis-->
+
+
+                                </div>
+                              </div>
+                              <div class="mb-3">
+                                <label for="editarTipoSiniestro" class="form-label">Tipo de siniestro</label>
+                                <select class="form-select"
+                                  id="editarTipoSiniestro-<%= siniestros[i].numeroSiniestro %>"
+                                  name="editarTipoSiniestro">
+                                  <option value="Cristales" <%=siniestros[i].tipoSiniestro==='Cristales' ? 'selected'
+                                    : '' %>>Cristales
+                                  </option>
+                                  <option value="Cerrajeria" <%=siniestros[i].tipoSiniestro==='Cerrajeria' ? 'selected'
+                                    : '' %>>Cerrajeria
+                                  </option>
+                                  <option value="Daño parcial" <%=siniestros[i].tipoSiniestro==='Daño parcial'
+                                    ? 'selected' : '' %>>Daño parcial</option>
+                                  <option value="Destruccion Total" <%=siniestros[i].tipoSiniestro==='Destruccion Total'
+                                    ? 'selected' : '' %>
+                                    >Destruccion Total</option>
+                                  <option value="Granizo" <%=siniestros[i].tipoSiniestro==='Granizo' ? 'selected' : ''
+                                    %>
+                                    >Granizo</option>
+                                  <option value="Incendio" <%=siniestros[i].tipoSiniestro==='Incendio' ? 'selected' : ''
+                                    %>>Incendio</option>
+                                  <option value="Responsabilidad civil"
+                                    <%=siniestros[i].tipoSiniestro==='Responsabilidad civil' ? 'selected' : '' %>
+                                    >Responsabilidad civil</option>
+                                </select>
+                              </div>
+                              <div class="mb-3">
+                                <label for="editarTipoSiniestro" class="form-label">Tipo de siniestro</label>
+                                <select class="form-select"
+                                  id="editarTipoSiniestro-<%= siniestros[i].numeroSiniestro %>"
+                                  name="editarTipoSiniestro">
+                                  <option value="Cristales" <%=siniestros[i].tipoSiniestro==='Cristales' ? 'selected'
+                                    : '' %>>Cristales
+                                  </option>
+                                  <option value="Cerrajeria" <%=siniestros[i].tipoSiniestro==='Cerrajeria' ? 'selected'
+                                    : '' %>>Cerrajeria
+                                  </option>
+                                  <option value="Daño parcial" <%=siniestros[i].tipoSiniestro==='Daño parcial'
+                                    ? 'selected' : '' %>>Daño parcial</option>
+                                  <option value="Destruccion Total" <%=siniestros[i].tipoSiniestro==='Destruccion Total'
+                                    ? 'selected' : '' %>
+                                    >Destruccion Total</option>
+                                  <option value="Granizo" <%=siniestros[i].tipoSiniestro==='Granizo' ? 'selected' : ''
+                                    %>
+                                    >Granizo</option>
+                                  <option value="Incendio" <%=siniestros[i].tipoSiniestro==='Incendio' ? 'selected' : ''
+                                    %>>Incendio</option>
+                                  <option value="Responsabilidad civil"
+                                    <%=siniestros[i].tipoSiniestro==='Responsabilidad civil' ? 'selected' : '' %>
+                                    >Responsabilidad civil</option>
+                                </select>
+                              </div>
+                              <div class="mb-3">
+                                <label for="editarFechaSiniestro" class="form-label">Fecha del siniestro</label>
+                                <input type="date" class="form-control"
+                                  id="editarFechaSiniestro-<%= siniestros[i].numeroSiniestro %>"
+                                  name="editarFechaSiniestro"
+                                  value="<%= new Date(siniestros[i].fechaSiniestro.getTime() - 
+                                      siniestros[i].fechaSiniestro.getTimezoneOffset() * 60000).toISOString().substring(0, 10) %>" />
+                              </div>
+
+                              <div class="mb-3">
+                                <label for="editarDireccionSiniestro" class="form-label">Lugar del siniestro</label>
+                                <input type="text" class="form-control"
+                                  id="editarDireccionSiniestro-<%= siniestros[i].numeroSiniestro %>"
+                                  name="editarDireccionSiniestro" value="<%= siniestros[i].direccionSiniestro %>" />
+                              </div>
+                              <div class="mb-3">
+                                <label for="editarDescripcionSiniestro" class="form-label">Descripción del
+                                  siniestro</label>
+                                <input type="text" class="form-control"
+                                  id="editarDescripcionSiniestro-<%= siniestros[i].numeroSiniestro %>"
+                                  name="editarDescripcionSiniestro" value="<%= siniestros[i].descripcionSiniestro %>" />
+                              </div>
+
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                              Cerrar
+                            </button>
+                            <button type="submit" form="edit-siniestro-form-<%= siniestros[i].numeroSiniestro %>"
+                              class="btn btn-primary"
+                              onclick="modificarSiniestro('<%= siniestros[i].numeroSiniestro %>')">
+                              Guardar Cambios
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <% } %>
+                </tbody>
+              </table>
+          </div>
+          <% } else { %>
+            <p>No se encontraron siniestros</p>
+            <% } %>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p class="container text-center">&copy; 2024 - Gestión de Siniestros</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+  <script>
+    console.log("Script cargado");
+    function borrarPorNumeroSiniestro(numeroSiniestro) {
+      fetch("/borrar_siniestro", {
+        method: "DELETE",
+        body: numeroSiniestro,
+      });
+      window.location.href = "/consultar_siniestro";
+    }
+  </script>
+  <script>
+    function modificarSiniestro(numeroSiniestro) {
+      console.log("script");
+      // Obtén el documento del cliente del formulario
+      const numeroPoliza = document.getElementById(
+        "editarPoliza-" + numeroSiniestro
+      ).value;
+      const tipoDocumento = document.getElementById(
+        "editarTipoDocumentoCliente-" + numeroSiniestro
+      ).value;
+      const documentoCliente = document.getElementById(
+        "editarDocumentoCliente-" + numeroSiniestro
+      ).value;
+      const nombreCliente = document.getElementById(
+        "editarCliente-" + numeroSiniestro
+      ).value;
+      const direccionCliente = document.getElementById(
+        "editarDireccionCliente-" + numeroSiniestro
+      ).value;
+      const telefonoCliente = document.getElementById(
+        "editarTelefonoCliente-" + numeroSiniestro
+      ).value;
+      const mailCliente = document.getElementById(
+        "editarMailCliente-" + numeroSiniestro
+      ).value;
+      const tipoVehiculo = document.getElementById(
+        "editarTipoVehiculo-" + numeroSiniestro
+      ).value;
+      const patente = document.getElementById(
+        "editarPatente-" + numeroSiniestro
+      ).value;
+      const marca = document.getElementById(
+        "editarMarca-" + numeroSiniestro
+      ).value;
+      const modelo = document.getElementById(
+        "editarModelo-" + numeroSiniestro
+      ).value;
+      const anioFabricacion = document.getElementById(
+        "editarAnioFabricacion-" + numeroSiniestro
+      ).value;
+      const numeroDeMotor = document.getElementById(
+        "editarNumeroDeMotor-" + numeroSiniestro
+      ).value;
+      const numeroDeChasis = document.getElementById(
+        "editarNumeroDeChasis-" + numeroSiniestro
+      ).value;
+      const tipoSiniestro = document.getElementById(
+        "editarTipoSiniestro-" + numeroSiniestro
+      ).value;
+      const fechaSiniestro = document.getElementById(
+        "editarFechaSiniestro-" + numeroSiniestro
+      ).value;
+      const direccionSiniestro = document.getElementById(
+        "editarDireccionSiniestro-" + numeroSiniestro
+      ).value;
+      const descripcionSiniestro = document.getElementById(
+        "editarDescripcionSiniestro-" + numeroSiniestro
+      ).value;
+      fetch("/modificar_siniestro", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          numeroSiniestro,
+          numeroPoliza,
+          tipoDocumento,
+          documentoCliente,
+          nombreCliente,
+          direccionCliente,
+          telefonoCliente,
+          mailCliente,
+          tipoVehiculo,
+          patente,
+          marca,
+          modelo,
+          anioFabricacion,
+          numeroDeMotor,
+          numeroDeChasis,
+          tipoSiniestro,
+          fechaSiniestro,
+          direccionSiniestro,
+          descripcionSiniestro
+        }),
+      });
+      window.location.href = "/consultar_siniestro";
+    }
+  </script>
+</body>
+
+</html>
