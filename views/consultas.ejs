@@ -287,32 +287,7 @@
                                     >Responsabilidad civil</option>
                                 </select>
                               </div>
-                              <div class="mb-3">
-                                <label for="editarTipoSiniestro" class="form-label">Tipo de siniestro</label>
-                                <select class="form-select"
-                                  id="editarTipoSiniestro-<%= siniestros[i].numeroSiniestro %>"
-                                  name="editarTipoSiniestro">
-                                  <option value="Cristales" <%=siniestros[i].tipoSiniestro==='Cristales' ? 'selected'
-                                    : '' %>>Cristales
-                                  </option>
-                                  <option value="Cerrajeria" <%=siniestros[i].tipoSiniestro==='Cerrajeria' ? 'selected'
-                                    : '' %>>Cerrajeria
-                                  </option>
-                                  <option value="Daño parcial" <%=siniestros[i].tipoSiniestro==='Daño parcial'
-                                    ? 'selected' : '' %>>Daño parcial</option>
-                                  <option value="Destruccion Total" <%=siniestros[i].tipoSiniestro==='Destruccion Total'
-                                    ? 'selected' : '' %>
-                                    >Destruccion Total</option>
-                                  <option value="Granizo" <%=siniestros[i].tipoSiniestro==='Granizo' ? 'selected' : ''
-                                    %>
-                                    >Granizo</option>
-                                  <option value="Incendio" <%=siniestros[i].tipoSiniestro==='Incendio' ? 'selected' : ''
-                                    %>>Incendio</option>
-                                  <option value="Responsabilidad civil"
-                                    <%=siniestros[i].tipoSiniestro==='Responsabilidad civil' ? 'selected' : '' %>
-                                    >Responsabilidad civil</option>
-                                </select>
-                              </div>
+                      
                               <div class="mb-3">
                                 <label for="editarFechaSiniestro" class="form-label">Fecha del siniestro</label>
                                 <input type="date" class="form-control"
