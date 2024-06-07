@@ -108,7 +108,7 @@ app.post("/ingresar_siniestro", async (req, res) => {
   // Si la fecha del siniestro es válida, continuamos con el ingreso del siniestro
   await ingresarSiniestro({
     numeroSiniestro: numeroSiniestro,
-    numeroPoliza: parent(req.body.numeroPoliza),
+    numeroPoliza: parseInt(req.body.numeroPoliza),
     tipoDocumento: req.body.tipoDocumento,
     documento: parseInt(req.body.documentoCliente),
     cliente: req.body.nombreCliente.toUpperCase(),
