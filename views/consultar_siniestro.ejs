@@ -87,10 +87,11 @@
                   <th scope="col">Fecha del siniestro</th>
                 </tr>
               </thead>
+
               <tbody class="mb-3">
                 <% for(i=0; i < siniestros.length; i++) { const fechaSiniestro=new Date(siniestros[i].fechaSiniestro);
-                  const opciones = { day: '2-digit', month: '2-digit', year: 'numeric' };
-                  const fechaFormateada=fechaSiniestro.toLocaleDateString('es-AR',opciones); %>
+                  const opciones={ day: '2-digit' , month: '2-digit' , year: 'numeric' }; const
+                  fechaFormateada=fechaSiniestro.toLocaleDateString('es-AR',opciones); %>
                   <tr>
                     <th scope="row">
                       <%= siniestros[i].numeroSiniestro %>
@@ -321,6 +322,7 @@
                   </div>
                   <% } %>
               </tbody>
+
             </table>
           </div>
         </section>
