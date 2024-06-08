@@ -28,3 +28,11 @@ footer {
   padding: 5px;
 }
 
+@media (max-width: 1000px) {
+  .ocultar-en-movil {
+    display: none;
+  }
+}
+
+
+

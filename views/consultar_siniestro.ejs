@@ -80,11 +80,11 @@
               <thead class="mb-3">
                 <tr>
                   <th scope="col">N° Siniestro</th>
-                  <th scope="col">Cliente</th>
-                  <th scope="col">Documento</th>
+                  <th scope="col" class="ocultar-en-movil">Cliente</th>
+                  <th scope="col" class="ocultar-en-movil">Documento</th>
                   <th scope="col">Patente</th>
-                  <th scope="col">Tipo de siniestro</th>
-                  <th scope="col">Fecha del siniestro</th>
+                  <th scope="col" class="ocultar-en-movil" >Tipo de siniestro</th>
+                  <th scope="col" class="ocultar-en-movil">Fecha del siniestro</th>
                 </tr>
               </thead>
 
@@ -96,20 +96,20 @@
                     <th scope="row">
                       <%= siniestros[i].numeroSiniestro %>
                     </th>
-                    <td>
+                    <td class="ocultar-en-movil">
                       <%= siniestros[i].cliente %>
                     </td>
-                    <td>
+                    <td class="ocultar-en-movil">
                       <%= siniestros[i].documento %>
                     </td>
                     <td>
                       <%= siniestros[i].patente %>
                     </td>
-                    <td>
+                    <td class="ocultar-en-movil">
                       <%= siniestros[i].tipoSiniestro %>
                     </td>
                     <!-- Mostramos solo la fecha sin la hora -->
-                    <td>
+                    <td class="ocultar-en-movil">
                       <%= fechaFormateada %>
                     </td>
                     <td>
