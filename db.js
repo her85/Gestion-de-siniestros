@@ -1,9 +1,11 @@
 // Importamos las clases necesarias de MongoDB
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
-// Definimos la URI de conexión a nuestra base de datos en MongoDB Atlas
+const  { MONGODB_USR, MONGODB_PWD } = require('./config.js');
+
+
 const uri =
-  "mongodb+srv://hermondev85:UrL1KFp4vEm5Wmbk@cluster0.hloqam6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+"mongodb+srv://" + MONGODB_USR + ":" + MONGODB_PWD + "@cluster0.hloqam6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Creamos un nuevo cliente de MongoDB con la versión estable de la API
 const client = new MongoClient(uri, {
