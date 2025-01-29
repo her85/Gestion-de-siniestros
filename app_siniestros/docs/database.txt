@@ -1,0 +1,33 @@
+
+Base de datos no relacional (mongoDB)
+Colección principal: Siniestros
+
+Esquema
+
+{
+  "_id": ObjectId, // Identificador único del siniestro (generado automáticamente por MongoDB)
+  numeroSiniestro: numeroSiniestro,
+  numeroPoliza: req.body.numeroPoliza,
+  tipoDocumento: req.body.tipoDocumento,
+  documento: req.body.documentoCliente,
+  cliente: req.body.nombreCliente,
+  direccionCliente: req.body.direccionCliente,
+  telefonoCliente: req.body.telefonoCliente,
+  mailCliente: req.body.mailCliente,
+  tipoVehiculo: req.body.tipoVehiculo,
+  patente: req.body.patente,
+  marca: req.body.marca,
+  modelo: req.body.modelo,
+  anioFabricacion: req.body.anioFabricacion,
+  numeroDeMotor: req.body.numeroDeMotor,
+  numeroDeChasis: req.body.numeroDeChasis,
+  tipoSiniestro: req.body.tipoSiniestro,
+  fechaHoraSiniestro: req.body.fechaHoraSiniestro,
+  descripcionSiniestro: req.body.descripcionSiniestro,
+}
+
+
+
+                             
+                 
+                         
