@@ -19,6 +19,7 @@ centralizada la información relacionada con los siniestros de automóviles
 const express = require("express");
 const path = require("path");
 const ejs = require("ejs");
+const bcrypt = require('bcrypt'); // Para hashear contraseñas
 // Importamos las funciones de la base de datos
 const {
   mostrarTodo,
@@ -42,9 +43,46 @@ app.set("views", path.join(__dirname, "views"));
 
 // Definimos las rutas de nuestra aplicación
 
-// Renderizamos la página principal
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  // Buscar usuario en la base de datos
+  const user = await User.findOne({ username }); // Suponiendo que tienes un modelo User
+
+  if (!user) {
+      return res.status(401).send('Usuario no encontrado');
+  }
+
+  // Comparar contraseñas de forma segura
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+      return res.status(401).send('Contraseña incorrecta');
+  }
+
+  // Generar un token JWT
+  const token = jwt.sign({ userId: user._id }, 'tu_secreto_aqui', { expiresIn: '1h' });
+
+  // Almacenar el token en una cookie o enviarlo en el encabezado (opcional)
+  res.cookie('token', token, { httpOnly: true });
+
+  // Redireccionar al usuario a la página de inicio o a una página protegida
+  res.redirect('/pagina_principal');
+});
+
+// Renderizamos la inicio
 app.get("/", (req, res) => {
   res.render("index");
+});
+
+// Renderizamos la inicio de sesión
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+// Renderizamos la página principal
+app.get("/pagina_principal", (req, res) => {
+  res.render("pagina_principal");
 });
 
 // Renderizamos la página para ingresar un nuevo siniestro

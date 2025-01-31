@@ -1,3 +1,23 @@
+falta coleccion usuarios y validar ingresos
+
+
+Estructura basica
+
+app_siniestros/
+├── docs/
+│   └── doc.txt      // Documentación del proyecto
+├── views/
+│   └── index.ejs      // Página principal
+│   └── consultas.ejs    // Vista para ver siniestros
+│   └── consultar_siniestro.ejs   // Vista para consultar siniestros
+│   └── ingresar_siniestro.ejs  // Vista para ingresar siniestros
+│   └── login.ejs     // Vista para inicio de sesión
+│   └── estilo.css     // Estilos CSS
+├── app.js            // Archivo principal de la aplicación
+├── config.js            // Configuraciones de la aplicación
+├── db.js            // Conexion  base de datos
+└── package.json      // Archivo de configuración de npm
+
 
 Base de datos no relacional (mongoDB)
 Colección principal: Siniestros
