@@ -20,6 +20,7 @@ const express = require("express");
 const path = require("path");
 const ejs = require("ejs");
 const bcrypt = require('bcrypt'); // Para hashear contraseñas
+const jwt = require('jsonwebtoken'); // Para generar tokens JWT
 // Importamos las funciones de la base de datos
 const {
   mostrarTodo,
@@ -28,6 +29,7 @@ const {
   buscarSiniestros,
   borrarPorNumeroSiniestro,
   modificarSiniestro,
+  buscarUsuario,
 } = require("./db");
 // Creamos una nueva aplicación Express
 const app = express();
@@ -45,29 +47,36 @@ app.set("views", path.join(__dirname, "views"));
 
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
+  console.log("Username recibido:", username);
+  console.log("Password recibido:", password);
+  try {
+    const user = await buscarUsuario({ username });
+    console.log("Usuario encontrado:", user);
+    if (!user) {
+      return res.status(401).render('login', { error: 'Usuario no encontrado' });
+    }
 
-  // Buscar usuario en la base de datos
-  const user = await User.findOne({ username }); // Suponiendo que tienes un modelo User
+    // Depuración: Comparación directa de contraseñas
+    const isPasswordDirectlyValid = (password === user.password);
+    console.log("Contraseña válida (directa):", isPasswordDirectlyValid);
 
-  if (!user) {
-      return res.status(401).send('Usuario no encontrado');
+    // Comparación de contraseñas con bcrypt
+    /*const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log("Contraseña válida:", isPasswordValid);*/
+
+    if (!isPasswordDirectlyValid) {
+      return res.status(401).render('login', { error: 'Contraseña incorrecta' });
+    }
+
+    const token = jwt.sign({ userId: user._id }, 'tu_secreto_aqui', { expiresIn: '1h' });
+
+    res.cookie('token', token, { httpOnly: true });
+    res.redirect('/pagina_principal');
+
+  } catch (error) {
+    console.error('Error en el inicio de sesión:', error);
+    res.status(500).render('login', { error: 'Error interno del servidor' });
   }
-
-  // Comparar contraseñas de forma segura
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-
-  if (!isPasswordValid) {
-      return res.status(401).send('Contraseña incorrecta');
-  }
-
-  // Generar un token JWT
-  const token = jwt.sign({ userId: user._id }, 'tu_secreto_aqui', { expiresIn: '1h' });
-
-  // Almacenar el token en una cookie o enviarlo en el encabezado (opcional)
-  res.cookie('token', token, { httpOnly: true });
-
-  // Redireccionar al usuario a la página de inicio o a una página protegida
-  res.redirect('/pagina_principal');
 });
 
 // Renderizamos la inicio
@@ -77,7 +86,7 @@ app.get("/", (req, res) => {
 
 // Renderizamos la inicio de sesión
 app.get("/login", (req, res) => {
-  res.render("login");
+  res.render('login', { error: null }); // Pasar error como null inicialmente
 });
 
 // Renderizamos la página principal

@@ -21,6 +21,9 @@
             <h1>Iniciar sesión</h1>
         </div>
         <div class="row justify-content-md-center">
+          <% if (error) { %>
+            <p style="color: red;"><%= error %></p>
+        <% } %>
             <form action="/login" method="POST">
                 <label for="username" class="col-sm-2 col-form-label col-form-label-lg">Usuario:</label>
                 <input type="text" id="username" name="username" required />

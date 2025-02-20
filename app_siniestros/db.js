@@ -33,6 +33,11 @@ connectToDb();
 //y la colección con la que vamos a trabajar
 const database = client.db("database");
 const siniestros = database.collection("siniestros");
+const usuarios = database.collection("usuarios");
+
+async function buscarUsuario(usuario) {
+  return await usuarios.findOne(usuario);
+}
 
 // Función para obtener todos los siniestros
 async function mostrarTodo() {
@@ -129,4 +134,5 @@ module.exports = {
   buscarSiniestros,
   borrarPorNumeroSiniestro,
   modificarSiniestro,
+  buscarUsuario,
 };
