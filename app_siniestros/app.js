@@ -19,7 +19,6 @@ centralizada la información relacionada con los siniestros de automóviles
 const express = require("express");
 const path = require("path");
 const ejs = require("ejs");
-const bcrypt = require('bcrypt'); // Para hashear contraseñas
 const jwt = require('jsonwebtoken'); // Para generar tokens JWT
 // Importamos las funciones de la base de datos
 const {
@@ -59,10 +58,6 @@ app.post('/login', async (req, res) => {
     // Depuración: Comparación directa de contraseñas
     const isPasswordDirectlyValid = (password === user.password);
     console.log("Contraseña válida (directa):", isPasswordDirectlyValid);
-
-    // Comparación de contraseñas con bcrypt
-    /*const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log("Contraseña válida:", isPasswordValid);*/
 
     if (!isPasswordDirectlyValid) {
       return res.status(401).render('login', { error: 'Contraseña incorrecta' });

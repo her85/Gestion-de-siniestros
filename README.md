@@ -17,4 +17,4 @@ CSS: Hojas de estilo para el diseño y la presentación de la aplicación.
 
 Express: Framework web para Node.js que facilita la creación de la API y el manejo de rutas.
 
-Bcrypt: Librería para el cifrado seguro de contraseñas.
+
