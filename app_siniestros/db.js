@@ -3,8 +3,6 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const  { MONGODB_USR, MONGODB_PWD } = require('./config.js');
 
-MONGODB_USR=hermondev85
-MONGODB_PWD=KMlOZSiOG8AY3sVI
 
 const uri =
 "mongodb+srv://" + MONGODB_USR + ":" + MONGODB_PWD + "@cluster0.hloqam6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
