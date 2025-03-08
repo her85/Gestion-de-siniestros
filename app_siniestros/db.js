@@ -27,6 +27,15 @@ async function connectToDb() {
   }
 }
 
+// Cierra la conexión cuando la aplicación se cierra
+process.on('SIGINT', async () => {
+  if (client) {
+    await client.close();
+    console.log('Conexión a MongoDB cerrada');
+  }
+  process.exit();
+});
+
 // Conectamos a la base de datos
 connectToDb();
 // Seleccionamos la base de datos
